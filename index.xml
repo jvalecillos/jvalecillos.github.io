@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jose Valecillos</title>
+    <link>https://www.jvalecillos.net/</link>
+    <description>Recent content on Jose Valecillos</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 28 Jul 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.jvalecillos.net/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>About Jose</title>
+      <link>https://www.jvalecillos.net/about/</link>
+      <pubDate>Sun, 28 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.jvalecillos.net/about/</guid>
+      <description>Jose has 10 years of experience as Software Engineer and Team Lead, he’s specialized in backend programming in Golang, PHP and Java. One of Jose’s specialties is SQL specifically with SAP ASE, Microsoft SQL, MySQL and Postgres. Jose has also worked with AWS, Ansible, Docker and Kubernetes.
+In the last 4 years Jose worked in autonomous and agile teams and he worked on integrations with several payment providers like Adyen, Braintree, PayPal and Klarna.</description>
+    </item>
+    
+  </channel>
+</rss>
