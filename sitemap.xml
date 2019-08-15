@@ -5,7 +5,16 @@
   <url>
     <loc>https://www.jvalecillos.net/categories/</loc>
     <lastmod>2019-08-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.jvalecillos.net/tags/ci/cd/</loc>
+    <lastmod>2019-08-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.jvalecillos.net/categories/ci/cd/</loc>
+    <lastmod>2019-08-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -14,57 +23,38 @@
   </url>
   
   <url>
-    <loc>https://www.jvalecillos.net/</loc>
-    <lastmod>2019-08-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.jvalecillos.net/posts/</loc>
-    <lastmod>2019-08-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.jvalecillos.net/tags/</loc>
-    <lastmod>2019-08-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.jvalecillos.net/categories/ci/cd/</loc>
-    <lastmod>2019-08-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.jvalecillos.net/tags/ci/cd/</loc>
-    <lastmod>2019-08-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://www.jvalecillos.net/tags/github/</loc>
     <lastmod>2019-08-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.jvalecillos.net/categories/golang/</loc>
     <lastmod>2019-08-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.jvalecillos.net/tags/golang/</loc>
     <lastmod>2019-08-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.jvalecillos.net/tags/hugo/</loc>
     <lastmod>2019-08-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.jvalecillos.net/</loc>
+    <lastmod>2019-08-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.jvalecillos.net/posts/</loc>
+    <lastmod>2019-08-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.jvalecillos.net/tags/</loc>
+    <lastmod>2019-08-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
