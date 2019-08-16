@@ -11,7 +11,7 @@
 <meta http-equiv="Cache-Control" content="public" />
 <!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.57.0" />
+<meta name="generator" content="Hugo 0.57.1" />
 
     
     
@@ -202,7 +202,7 @@ Built with <a href="https://gohugo.io">Hugo</a> ❤️
     
     
     <br/>
-    <i class="fas fa-clock"></i> 5 min read
+    <i class="fas fa-clock"></i> 4 min read
 </div>
 
 
@@ -334,37 +334,38 @@ git commit -m &quot;Initial commit&quot;
 <h3 id="create-travis-build">Create travis build</h3>
 
 <ul>
-<li><p>Create a <code>.travis.yml</code> file in the root of the <code>blog</code> repository with the following configuration (for more information check <a href="https://docs.travis-ci.com/user/deployment/pages/">Travis CI GitHub Pages Deployment</a>):</p>
+<li>Create a <code>.travis.yml</code> file in the root of the <code>blog</code> repository with the following configuration (for more information check <a href="https://docs.travis-ci.com/user/deployment/pages/">Travis CI GitHub Pages Deployment</a>):</li>
+</ul>
 
-<pre><code class="language-yml">dist: bionic # Ubuntu distribution
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">dist<span class="p">:</span><span class="w"> </span>bionic<span class="w"> </span><span class="c"># Ubuntu distribution</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>language<span class="p">:</span><span class="w"> </span>go<span class="w"> </span><span class="c"># programming language</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>go<span class="p">:</span><span class="w">
+</span><span class="w">  </span>-<span class="w"> </span>master<span class="w"> </span><span class="c"># This will use the latest version of the language</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="c"># Install hugo extended using snaps</span><span class="w">
+</span><span class="w"></span>addons<span class="p">:</span><span class="w">
+</span><span class="w">  </span>snaps<span class="p">:</span><span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>hugo<span class="w">
+</span><span class="w">      </span>channel<span class="p">:</span><span class="w"> </span>extended/stable<span class="w"> </span><span class="c"># will be passed to --channel flag</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>script<span class="p">:</span><span class="w">
+</span><span class="w">  </span>-<span class="w"> </span>hugo<span class="w"> </span><span class="c"># This commands builds your website on travis</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>deploy<span class="p">:</span><span class="w">
+</span><span class="w">  </span>provider<span class="p">:</span><span class="w"> </span>pages<span class="w"> </span><span class="c"># GitHub Pages Deployment</span><span class="w">
+</span><span class="w">  </span>skip_cleanup<span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c"># prevents delete all the files created during the build that you are trying to upload</span><span class="w">
+</span><span class="w">  </span>local_dir<span class="p">:</span><span class="w"> </span>public<span class="w"> </span><span class="c"># Default static site output dir for Hugo</span><span class="w">
+</span><span class="w">  </span>repo<span class="p">:</span><span class="w"> </span>username/username.github.io<span class="w"> </span><span class="c"># This is the slug of the repo you want to deploy your site to</span><span class="w">
+</span><span class="w">  </span>target_branch<span class="p">:</span><span class="w"> </span>master<span class="w"> </span><span class="c"># Branch to push local_dir contents to, defaults to gh-pages</span><span class="w">
+</span><span class="w">  </span>github_token<span class="p">:</span><span class="w"> </span>$GITHUB_TOKEN<span class="w"> </span><span class="c"># Set in the settings page of your repository, as a secure variable</span><span class="w">
+</span><span class="w">  </span>keep_history<span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c"># Optional, create incremental commit instead of doing push force, defaults to false</span><span class="w">
+</span><span class="w">  </span>email<span class="p">:</span><span class="w"> </span>your_email+blog-bot@gmail.com<span class="w">
+</span><span class="w">  </span>on<span class="p">:</span><span class="w">
+</span><span class="w">    </span>branch<span class="p">:</span><span class="w"> </span>master<span class="w"> </span><span class="c"># this is the branch were changes are pushed</span></code></pre></div>
 
-language: go # programming language
-
-go:
-- master # This will use the latest version of the language
-
-# Install hugo extended using snaps
-addons:
-snaps:
-- name: hugo
-  channel: extended/stable # will be passed to --channel flag
-
-script:
-- hugo # This commands builds your website on travis
-
-deploy:
-provider: pages # GitHub Pages Deployment
-skip_cleanup: true # prevents delete all the files created during the build that you are trying to upload
-local_dir: public # Default static site output dir for Hugo
-repo: username/username.github.io # This is the slug of the repo you want to deploy your site to
-target_branch: master # Branch to push local_dir contents to, defaults to gh-pages
-github_token: $GITHUB_TOKEN # Set in the settings page of your repository, as a secure variable
-keep_history: true # Optional, create incremental commit instead of doing push force, defaults to false
-email: your_email+blog-bot@gmail.com
-on:
-branch: master # this is the branch were changes are pushed
-</code></pre></li>
-
+<ul>
 <li><p>Commit <code>.travis.yml</code>:</p>
 
 <pre><code class="language-bash">git add .travis.yml
@@ -416,17 +417,13 @@ git commit -m &quot;Adding travis ci automation&quot;
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
         
             
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
-            
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/yaml.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/toml.min.js"></script>
             
         
     
     <script type="text/javascript">
         
-        hljs.configure({languages: ["bash, yaml, toml"]});
+        hljs.configure({languages: ["yaml"]});
         
         hljs.initHighlightingOnLoad();
     </script>
