@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Cache-Control" content="public" />
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.57.2" />
+
+    
+    
+    
+
+<title>Testing Serialization errors in Golang • Jose Valecillos</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Testing Serialization errors in Golang"/>
+<meta name="twitter:description" content="How do you cover negative scenarios for JSON/XML serialization in Golang using the standard library?. There is a trick that can be used whenever you are using a float64 type in your struct."/>
+
+<meta property="og:title" content="Testing Serialization errors in Golang" />
+<meta property="og:description" content="How do you cover negative scenarios for JSON/XML serialization in Golang using the standard library?. There is a trick that can be used whenever you are using a float64 type in your struct." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.jvalecillos.net/posts/json-float-test-coverage/" />
+<meta property="article:published_time" content="2019-08-18T22:13:17+02:00" />
+<meta property="article:modified_time" content="2019-08-18T22:13:17+02:00" /><meta property="og:site_name" content="Jose&#39;s Blog" />
+
+
+    
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/scss/hyde-hyde.6a83d62c39a364f036df4db1ecd564645635d6c7fc182425cb501218fec485f5.css" integrity="sha256-aoPWLDmjZPA2302x7NVkZFY11sf8GCQly1ASGP7EhfU=">
+
+
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+</head>
+
+
+    <body class=" ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://www.jvalecillos.net/">Jose Valecillos</a>
+      </span>
+      
+      
+        <div class="author-image">
+          <img src="https://www.gravatar.com/avatar/83558173752eafb43d323f5062837d6b?s=240&d=mp" class="img--circle img--headshot element--center" alt="gravatar">
+        </div>
+      
+      <p class="site__description">
+         World on a wire 
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Jose Valecillos</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/jvalecillos" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://github.com/jvalecillos" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/jvalecillos" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
+    
+<div class="copyright">
+  &copy; 2019 jvalecillos
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+<div class="builtwith">
+Built with <a href="https://gohugo.io">Hugo</a> ❤️
+</div>
+
+
+  </div>
+</div>
+
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>Testing Serialization errors in Golang</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Aug 18, 2019
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/golang">golang</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 3 min read
+</div>
+
+
+  </header>
+  
+  
+  <div class="post">
+    
+
+<p><strong>How do you cover negative scenarios for JSON/XML serialization in Golang using the standard library?</strong>.</p>
+
+<p>Let&rsquo;s say that you are working with web-services, a RESTFul or SOAP API or you are implementing an HTTP Client. One way or another you will have to Serialize/Deserialize (aka Marshalling/Unmarchalling) JSON or XML. Also let&rsquo;s say you are aiming to have certain level of test coverage or at least cover your critical negative paths/scenarios.</p>
+
+<p>Consider the following trivial function (intentionally omitting any kind of HTTP for simplicity):</p>
+
+<pre><code class="language-go">package float
+
+import (
+	&quot;encoding/json&quot;
+)
+
+// ExchangeRate represents exchange rate api response
+type ExchangeRate struct {
+	USD  float64 `json:&quot;USD&quot;`
+	Base string  `json:&quot;base&quot;`
+}
+
+func rateAsBytes(rate ExchangeRate) ([]byte, error) {
+	bytes, err := json.Marshal(rate)
+	if err != nil {
+		return nil, err
+	}
+	return bytes, nil
+}
+</code></pre>
+
+<p>A test for the happy path could be written as follows:</p>
+
+<pre><code class="language-go">package float
+
+import (
+	&quot;reflect&quot;
+	&quot;testing&quot;
+)
+
+func Test_rateAsBytes(t *testing.T) {
+	rate := ExchangeRate{Base: &quot;EUR&quot;, USD: 10.50}
+
+	expected := []byte(`{&quot;USD&quot;:10.5,&quot;base&quot;:&quot;EUR&quot;}`)
+
+	got, err := rateAsBytes(rate)
+
+	if err != nil {
+		t.Errorf(&quot;rateAsBytes() error = %v&quot;, err)
+		return
+	}
+
+	if !reflect.DeepEqual(got, expected) {
+		t.Errorf(&quot;rateAsBytes() = %v, want %v&quot;, string(got), string(expected))
+	}
+}
+</code></pre>
+
+<h2 id="the-problem">The problem</h2>
+
+<p>Having the original function 4 lines, the happy path test will cover 3 of them for a total of 75% test coverage. <em>What do you do if you want to cover more?</em>, or more importantly how will your application behave?. How do you make the standard library <code>json</code> to fail if the compiler checks that your <code>struct</code> definition and assignments are valid.</p>
+
+<p>One alternative is to <strong>create an interface around the Marshalling</strong> that defines the function signature <code>func Marshal(v interface{}) ([]byte, error)</code>, then you can structure your code to use the concrete implementation and a mock for your tests. <strong>But that is too much work for simply covering a simple <code>if</code></strong>.</p>
+
+<h2 id="the-solution">The solution</h2>
+
+<p>There is <strong>a trick that can be used whenever you are using a <code>float64</code> type in your <code>struct</code></strong>. It relies on the math library, specifically on the function <a href="https://golang.org/pkg/math/#NaN"><code>math.NaN()</code></a> that returns an IEEE 754 <code>not-a-number</code> value. That value can be used for assignments on variables and valid during compile time, yet <em>the <code>json</code> library will fail on encoding during runtime</em>.</p>
+
+<p>The final version of the test, using also <a href="https://github.com/golang/go/wiki/TableDrivenTests">table driven tests</a>, will look as follows (behold the full coverage):</p>
+
+<pre><code class="language-go">package float
+
+import (
+	&quot;math&quot;
+	&quot;reflect&quot;
+	&quot;testing&quot;
+)
+
+func Test_rateAsBytes(t *testing.T) {
+	tests := []struct {
+		name    string
+		rate    ExchangeRate
+		want    []byte
+		wantErr bool
+	}{
+		{
+			name:    &quot;success case&quot;,
+			rate:    ExchangeRate{Base: &quot;EUR&quot;, USD: 10.50},
+			want:    []byte(`{&quot;USD&quot;:10.5,&quot;base&quot;:&quot;EUR&quot;}`),
+			wantErr: false,
+		},
+		{
+			name:    &quot;failed case&quot;,
+			rate:    ExchangeRate{Base: &quot;EUR&quot;, USD: math.NaN()},
+			want:    nil,
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			// Running tests in parallel :)
+			t.Parallel()
+			got, err := rateAsBytes(tt.rate)
+			if (err != nil) != tt.wantErr {
+				t.Errorf(&quot;rateAsBytes() error = %v, wantErr %v&quot;, err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf(&quot;rateAsBytes() = %v, want %v&quot;, string(got), string(tt.want))
+			}
+		})
+	}
+}
+</code></pre>
+
+<p>The same ~trick~ technique can be used also for XML.</p>
+
+<p>See also:</p>
+
+<ul>
+<li><a href="https://blog.golang.org/cover">The cover story</a>.</li>
+<li><a href="https://dave.cheney.net/2019/05/07/prefer-table-driven-tests">Prefer table driven tests</a> by Dave Cheney.</li>
+<li><a href="https://godoc.org/encoding/json">Golang JSON Package</a></li>
+<li><a href="https://godoc.org/encoding/xml">Golang XML Package</a></li>
+</ul>
+
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="/posts/hugo-github-pages-travis/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Creating a free personal site on GitHub Pages</span>
+    </a>
+    
+    
+</div>
+
+
+  
+
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+<script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
+
+
+    
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/go.min.js"></script>
+            
+        
+    
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["go"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+
+    
+
+
+
+    </body>
+</html>

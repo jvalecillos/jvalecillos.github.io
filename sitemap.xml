@@ -3,6 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.jvalecillos.net/tags/golang/</loc>
+    <lastmod>2019-08-18T22:13:17+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.jvalecillos.net/</loc>
+    <lastmod>2019-08-18T22:13:17+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.jvalecillos.net/posts/</loc>
+    <lastmod>2019-08-18T22:13:17+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.jvalecillos.net/tags/</loc>
+    <lastmod>2019-08-18T22:13:17+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.jvalecillos.net/posts/json-float-test-coverage/</loc>
+    <lastmod>2019-08-18T22:13:17+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.jvalecillos.net/categories/</loc>
     <lastmod>2019-08-10T00:00:00+00:00</lastmod>
   </url>
@@ -33,27 +58,7 @@
   </url>
   
   <url>
-    <loc>https://www.jvalecillos.net/tags/golang/</loc>
-    <lastmod>2019-08-10T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.jvalecillos.net/tags/hugo/</loc>
-    <lastmod>2019-08-10T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.jvalecillos.net/</loc>
-    <lastmod>2019-08-10T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.jvalecillos.net/posts/</loc>
-    <lastmod>2019-08-10T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.jvalecillos.net/tags/</loc>
     <lastmod>2019-08-10T00:00:00+00:00</lastmod>
   </url>
   
